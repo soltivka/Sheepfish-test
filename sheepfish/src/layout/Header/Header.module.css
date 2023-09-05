@@ -1,0 +1,26 @@
+.navbar {
+    background-color: #007BFF;
+    color: #fff;
+    display: flex;
+    padding: 20px;
+    font-size: 24px;
+    justify-content: space-between;
+}
+
+.navbarBrand {
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.navLink:global(.active) {
+    box-shadow: inset 0px -39px 78px -9px rgba(255,255,255,1);
+    border: solid 1px red;
+    color: orange;
+}
+
+.navLink {
+    color: #fff;
+    margin: 0 20px 0 20px;
+}
+
