@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import styles from "./Header.module.css"; // Імпортуйте модуль CSS
+import styles from "./Header.module.css";
 
 const Header: React.FC = () => {
   const location = useLocation();

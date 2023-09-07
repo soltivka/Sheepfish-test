@@ -2,20 +2,10 @@ import SfTable, {ColumnDefinitionType} from "../../components/SfTable/SfTable";
 import dummyData from "./dummyData";
 import {useState} from "react";
 import _ from "lodash";
+import {Product} from "../../models/product";
 
-type Product = {
-    "id": number,
-    "title": string,
-    "description": string,
-    "price": number,
-    "discountPercentage": number,
-    "rating": number,
-    "stock": number,
-    "brand": string,
-    "category": string,
-    "thumbnail": string,
-    "images": Array<string>
-}
+
+
 
 
 const ProductsTable = () => {

@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../Header/Header";
 
 interface props {
-  children: React.ReactNode; // Використовуйте React.ReactNode для передачі дітей компоненту
+  children: React.ReactNode;
 }
 
 const Layout = ({ children }: props) => {
