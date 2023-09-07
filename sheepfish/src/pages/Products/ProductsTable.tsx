@@ -1,4 +1,4 @@
-import SfTable, {ColumnDefinitionType} from "../../components/Table/SfTable";
+import SfTable, {ColumnDefinitionType} from "../../components/SfTable/SfTable";
 import dummyData from "./dummyData";
 import {useState} from "react";
 import _ from "lodash";
