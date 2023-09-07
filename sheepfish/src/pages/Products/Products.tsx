@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import ProductsTable from "./ProductsTable";
 import Button from "react-bootstrap/Button";
-import {Plus, PlusLg} from "react-bootstrap-icons";
-import SfModal from "../../components/SfModal/SfModal";
+import {PlusLg} from "react-bootstrap-icons";
+import AddProductModal from "./AddProductModal";
 
 function Products() {
     const [modalShow, setModalShow] = useState(false)
@@ -16,11 +16,9 @@ function Products() {
             >
                 <PlusLg/>
             </Button>
-            <SfModal show={modalShow}
-                     header={'Adding new product'}
+            <AddProductModal show={modalShow}
                      handleClose={() => setModalShow(false)}>
-
-            </SfModal>
+            </AddProductModal>
         </div>
     );
 }

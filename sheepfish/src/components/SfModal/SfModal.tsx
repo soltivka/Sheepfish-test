@@ -2,14 +2,14 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import {ModalProps} from "react-bootstrap";
 
-interface FsModalProps extends ModalProps {
+export interface SfModalProps extends ModalProps {
     show: boolean
     handleClose: () => void
     handleSave?: () => void
     header?: string
 }
 
-function SfModal(props: FsModalProps) {
+function SfModal(props: SfModalProps) {
     const {show, handleClose, handleSave, header} = props
 
     return (

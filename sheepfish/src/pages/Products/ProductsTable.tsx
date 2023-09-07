@@ -22,7 +22,6 @@ const ProductsTable = () => {
     const [data, setData] = useState(dummyData)
     const sort = function(property:string){
         const sortedData = _.sortBy(data, [property, 'id'])
-        console.log(data)
         setData(sortedData)
     }
 
@@ -30,7 +29,8 @@ const ProductsTable = () => {
         {
             key: 'id',
             header: 'id',
-            width: 150
+            width: 150,
+            onClick: ()=>sort('id'),
         },
         {
             key: 'title',
