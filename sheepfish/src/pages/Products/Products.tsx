@@ -1,9 +1,10 @@
 import React from "react";
+import ProductsTable from "./ProductsTable";
 
 function Products() {
   return (
     <div>
-        products list
+        <ProductsTable/>
     </div>
   );
 }
