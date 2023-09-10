@@ -20,6 +20,11 @@ export const fetchData = createAsyncThunk(
     request
 )
 
+export const searchData = createAsyncThunk(
+    'products/search',
+    request
+)
+
 export const productsSlice = createSlice({
     name: 'products',
     initialState: {
@@ -58,6 +63,16 @@ export const productsSlice = createSlice({
         builder.addCase(fetchData.rejected, (state, action) => {
             state.loading = false;
             //todo showError
+        })
+
+        builder.addCase(searchData.fulfilled, (state,action)=>{
+            state.loading = false;
+            productAdapter.setAll(state.list, action.payload.products)
+        })
+
+        builder.addCase(searchData.pending, (state, action) => {
+            state.loading = true
+            state.error=''
         })
     },
 })

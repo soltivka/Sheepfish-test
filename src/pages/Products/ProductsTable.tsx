@@ -3,14 +3,15 @@ import {useEffect, useRef, useState} from "react";
 import _ from "lodash";
 import {Product} from "../../models/product";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {fetchData} from "../../redux/productsSlice";
-import {Spinner} from "react-bootstrap";
+import {fetchData, searchData} from "../../redux/productsSlice";
+import {InputGroup, Spinner} from "react-bootstrap";
 import {useNavigate, useNavigation, useParams} from "react-router";
 import {useLocation, useSearchParams} from "react-router-dom";
+import { Form } from "react-bootstrap";
 
 
 const ProductsTable = () => {
-    const rows = 5
+    const rows = 50
     const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.products)
     const navigate = useNavigate()
@@ -86,8 +87,24 @@ const ProductsTable = () => {
     ]
     const data = Object.values((products.list.entities as unknown) as { [key: string]: Product }).filter(el => !el.isDeleted)
 
+    const onSearchInput = (value:string)=>{
+        const url = 'search?q='+value
+        dispatch(searchData({
+            url: `/products/${url}`,
+            method: 'get',
+        }))
+
+    }
+
     return (
         <>
+            <InputGroup className="mb-3">
+                <InputGroup.Text id="basic-addon1">Search</InputGroup.Text>
+                <Form.Control onChange={(e)=>{
+                    console.log(e.target.value)
+                    onSearchInput(e.target.value)
+                }}/>
+            </InputGroup>
             <SfTable data={data} columns={columns} rows={rows} maxPage={products.total / rows}
                      onPageChanged={(n) => navigate('?page=' + n)}
             />
