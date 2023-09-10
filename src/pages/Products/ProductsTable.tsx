@@ -1,26 +1,33 @@
 import SfTable, {ColumnDefinitionType} from "../../components/SfTable/SfTable";
-import dummyData from "./dummyData";
 import {useEffect, useState} from "react";
 import _ from "lodash";
 import {Product} from "../../models/product";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {fetchData} from "../../redux/productsSlice";
 import {Spinner} from "react-bootstrap";
+import {useNavigate, useNavigation, useParams} from "react-router";
+import {useLocation, useSearchParams} from "react-router-dom";
 
 
 const ProductsTable = () => {
+    const rows = 5
     const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.products)
+    const navigate = useNavigate()
+    const search = useLocation().search;
+    const currentPage = Number(new URLSearchParams(search).get("id")) || 0;
     const sort = function (property: string) {
         // const sortedData = _.sortBy(data, [property, 'id'])
         //  setData(sortedData)
     }
+    //get first page
     useEffect(() => {
         dispatch(fetchData({
-            url: '/products?limit=10',
+            url: `/products?limit=${rows}&skip=${rows * currentPage}`,
             method: 'get',
         }))
-    }, [])
+    }, [currentPage])
+
     const columns: ColumnDefinitionType<Product, keyof Product>[] = [
         {
             key: 'id',
@@ -74,11 +81,13 @@ const ProductsTable = () => {
             onClick: () => sort('stock'),
         },
     ]
-    const data = Object.values((products.list.entities as unknown) as { [key: string]: Product }).filter(a => a)
+    const data = Object.values((products.list.entities as unknown) as { [key: string]: Product }).filter(el => !el.isDeleted)
 
     return (
         <>
-            <SfTable data={data} columns={columns}/>
+            <SfTable data={data} columns={columns} rows={rows} maxPage={products.total / rows}
+                     onPageChanged={(n) => navigate('?page=' + n)}
+            />
             {products.loading ? <Spinner animation="border"/> : null}
         </>
 

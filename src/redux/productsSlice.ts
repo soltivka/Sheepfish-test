@@ -47,6 +47,7 @@ export const productsSlice = createSlice({
             state.loading = false
             state.error=''
             productAdapter.addMany(state.list, action.payload.products)
+            state.total= action.payload.total
         })
 
         builder.addCase(fetchData.pending, (state, action) => {
