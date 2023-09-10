@@ -1,7 +1,7 @@
 import Table from 'react-bootstrap/Table';
 import TableHeader from "./SfTableHeader";
 import TableRows from "./SfTableRows";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import SfPagination from "./SfPagination";
 
 
@@ -28,6 +28,7 @@ const SfTable = <T, K extends keyof T>({
                                            onPageChanged
                                        }: SfTableProps<T, K>): JSX.Element => {
     const [page, setPage] = useState(0)
+
     const dataToView = (rows && data.length > rows) ? data.slice(page * rows, (page * rows) + rows) : data
     useEffect(() => {
         if (onPageChanged) {

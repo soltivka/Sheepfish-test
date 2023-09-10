@@ -1,5 +1,5 @@
 import SfTable, {ColumnDefinitionType} from "../../components/SfTable/SfTable";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import _ from "lodash";
 import {Product} from "../../models/product";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
@@ -16,15 +16,19 @@ const ProductsTable = () => {
     const navigate = useNavigate()
     const search = useLocation().search;
     const currentPage = Number(new URLSearchParams(search).get("page")) || 0;
+    const uploadedPages = useRef(0)
     const sort = function (property: string) {
         // const sortedData = _.sortBy(data, [property, 'id'])
         //  setData(sortedData)
     }
     useEffect(() => {
-        dispatch(fetchData({
-            url: `/products?limit=${currentPage*rows}&skip=${data.length}`,
-            method: 'get',
-        }))
+        if (currentPage > uploadedPages.current || currentPage === 0) {
+            uploadedPages.current = currentPage
+            dispatch(fetchData({
+                url: `/products?limit=${currentPage * rows}&skip=${data.length}`,
+                method: 'get',
+            }))
+        }
     }, [currentPage])
 
     const columns: ColumnDefinitionType<Product, keyof Product>[] = [
