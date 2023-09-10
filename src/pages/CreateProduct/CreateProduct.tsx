@@ -1,18 +1,15 @@
-import React, {useState} from "react";
-import {object, string, number, date, InferType} from 'yup';
-import SfModal, {SfModalProps} from "../../components/SfModal/SfModal";
+import React from "react";
+import {SfModalProps} from "../../components/SfModal/SfModal";
 import {
     Formik,
-    Form,
-    Field,
 } from 'formik';
 import {Product, ProductSchema} from "../../models/product";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {fetchData} from "../../redux/productsSlice";
-import {Container} from "react-bootstrap";
+import {Col, Container, Form, Row} from "react-bootstrap";
+import Button from "react-bootstrap/Button";
+import FormField from "../../components/FormField/FormField";
 
-interface AddProductModalProps extends Omit<SfModalProps, 'header' | 'handleSave'> {
-}
+interface AddProductModalProps extends Omit<SfModalProps, 'header' | 'handleSave'> {}
 
 function CreateProduct(props: AddProductModalProps) {
     const store = useAppSelector(state=>state.products)
@@ -37,8 +34,7 @@ function CreateProduct(props: AddProductModalProps) {
     }
 
     return (
-        <Container>
-
+        <Container className="mt-3">
             <Formik
                 validationSchema={ProductSchema}
                 initialValues={initialValues}
@@ -54,32 +50,60 @@ function CreateProduct(props: AddProductModalProps) {
                       handleBlur,
                       handleSubmit,
                       isSubmitting
-                  }) => (
-                    <Form>
-                        <label htmlFor="title">Title</label>
-                        <Field id="title" name="title"/>
-                        {errors.title && touched.title && errors.title}
-
-                        <label htmlFor="description">Description</label>
-                        <Field id="description" name="description"/>
-                        {errors.description && touched.description && errors.description}
-
-                        <label htmlFor="price">Price</label>
-                        <Field id="price" name="price"/>
-                        {errors.price && touched.price && errors.price}
-
-                        <label htmlFor="brand">Brand</label>
-                        <Field id="brand" name="brand"/>
-                        {errors.brand && touched.brand && errors.brand}
-
-                        <label htmlFor="stock">Stock</label>
-                        <Field id="stock" name="stock"/>
-                        {errors.stock && touched.stock && errors.stock}
-
-                        <button type={'submit'} onClick={()=>{
-                        }}>ok</button>
-                    </Form>
-                )}
+                  }) => {
+                    debugger;
+                    return (
+                      <Form noValidate onSubmit={handleSubmit}>
+                          <Row className="mb-3">
+                              <Col md={5}>
+                                  <FormField
+                                    controlId="title"
+                                    label="Title"
+                                    type="text"
+                                    name="title"
+                                  />
+                              </Col>
+                              <Col md={2}>
+                                  <FormField
+                                    controlId="price"
+                                    label="Price"
+                                    type="number"
+                                    name="price"
+                                  />
+                              </Col>
+                              <Col md={2}>
+                                  <FormField
+                                    controlId="stock"
+                                    label="Stock"
+                                    type="number"
+                                    name="stock"
+                                  />
+                              </Col>
+                              <Col md={3}>
+                                  <FormField
+                                    controlId="brand"
+                                    label="Brand"
+                                    type="text"
+                                    name="brand"
+                                  />
+                              </Col>
+                          </Row>
+                          <Row className="mb-3">
+                              <Col>
+                                  <FormField
+                                    controlId="description"
+                                    label="Description"
+                                    type="text"
+                                    name="description"
+                                  />
+                              </Col>
+                          </Row>
+                          <Button className="mb-3" variant="primary" type="submit">
+                              Submit
+                          </Button>
+                      </Form>
+                    )
+                }}
             </Formik>
 
         </Container>
