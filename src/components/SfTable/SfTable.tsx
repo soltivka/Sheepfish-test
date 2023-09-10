@@ -1,8 +1,7 @@
 import Table from 'react-bootstrap/Table';
 import TableHeader from "./SfTableHeader";
 import TableRows from "./SfTableRows";
-import React, {useEffect, useRef, useState} from "react";
-import SfPagination from "./SfPagination";
+import React from "react";
 
 
 export type ColumnDefinitionType<T, K extends keyof T | string> = {
@@ -23,31 +22,19 @@ type SfTableProps<T, K extends keyof T> = {
 const SfTable = <T, K extends keyof T>({
                                            data,
                                            columns,
-                                           rows,
-                                           maxPage,
-                                           onPageChanged
                                        }: SfTableProps<T, K>): JSX.Element => {
-    const [page, setPage] = useState(0)
 
-    const dataToView = (rows && data.length > rows) ? data.slice(page * rows, (page * rows) + rows) : data
-    useEffect(() => {
-        if (onPageChanged) {
-            onPageChanged(page)
-        }
-    }, [page])
 
     return (
         <>
             <Table striped bordered hover variant="dark">
                 <TableHeader columns={columns}/>
                 <TableRows
-                    data={dataToView}
+                    data={data}
                     columns={columns}
                 />
 
             </Table>
-            {rows ? <SfPagination page={page} setPage={setPage}
-                                  maxPage={maxPage || Math.round(data.length / rows)}></SfPagination> : null}
         </>
     );
 };

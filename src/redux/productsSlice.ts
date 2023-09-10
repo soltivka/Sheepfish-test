@@ -10,7 +10,7 @@ const productAdapter = createEntityAdapter<Product>({
 })
 
 // { ids: [], entities: {} }
-const productSelectors = productAdapter.getSelectors<RootState>(
+export const productSelectors = productAdapter.getSelectors<RootState>(
     (state) => state.products.list
 )
 
@@ -32,10 +32,20 @@ export const productsSlice = createSlice({
         loading: false,
         total: 0,
         error: '',
+        sortBy: 'id',
+        sortAsc:true,
         showError: false,
     },
     reducers: {
-
+        setSortSettings(state, action) {
+            if(action.payload === state.sortBy){
+                state.sortAsc = !state.sortAsc
+            }else{
+                state.sortBy=action.payload
+                state.sortAsc = true
+            }
+        }
+        ,
         productLoading(state, action) {
         },
         productReceived(state, action) {
@@ -50,14 +60,14 @@ export const productsSlice = createSlice({
         // Add reducers for additional action types here, and handle loading state as needed
         builder.addCase(fetchData.fulfilled, (state, action) => {
             state.loading = false
-            state.error=''
+            state.error = ''
             productAdapter.addMany(state.list, action.payload.products)
-            state.total= action.payload.total
+            state.total = action.payload.total
         })
 
         builder.addCase(fetchData.pending, (state, action) => {
             state.loading = true
-            state.error=''
+            state.error = ''
         })
 
         builder.addCase(fetchData.rejected, (state, action) => {
@@ -65,20 +75,20 @@ export const productsSlice = createSlice({
             //todo showError
         })
 
-        builder.addCase(searchData.fulfilled, (state,action)=>{
+        builder.addCase(searchData.fulfilled, (state, action) => {
             state.loading = false;
             productAdapter.setAll(state.list, action.payload.products)
         })
 
         builder.addCase(searchData.pending, (state, action) => {
             state.loading = true
-            state.error=''
+            state.error = ''
         })
     },
 })
 
 
-export const {productLoading, productReceived} = productsSlice.actions
+export const {productLoading, setSortSettings, productReceived} = productsSlice.actions
 
 export default productsSlice.reducer
 
