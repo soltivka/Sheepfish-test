@@ -1,7 +1,7 @@
 import {createAsyncThunk, createEntityAdapter, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {Product} from "../models/product";
 import {RootState} from "./store";
-import {request} from "../api/request";
+import {postProduct, request} from "../api/request";
 
 
 const productAdapter = createEntityAdapter<Product>({
@@ -18,6 +18,14 @@ export const productSelectors = productAdapter.getSelectors<RootState>(
 export const fetchData = createAsyncThunk(
     'products/fetch',
     request
+)
+
+export const createProduct = createAsyncThunk(
+    'products/createProduct',
+  async (productData: Product) => {
+      const product = await postProduct(productData)
+      return product;
+  }
 )
 
 export const searchData = createAsyncThunk(
@@ -44,8 +52,7 @@ export const productsSlice = createSlice({
                 state.sortBy=action.payload
                 state.sortAsc = true
             }
-        }
-        ,
+        },
         productLoading(state, action) {
         },
         productReceived(state, action) {
@@ -81,6 +88,20 @@ export const productsSlice = createSlice({
         })
 
         builder.addCase(searchData.pending, (state, action) => {
+            state.loading = true
+            state.error = ''
+        })
+
+        builder.addCase(createProduct.rejected, (state, action) => {
+            state.loading = false;
+        })
+
+        builder.addCase(createProduct.fulfilled, (state, action) => {
+            state.loading = false;
+            productAdapter.upsertOne(state.list, action.payload)
+        })
+
+        builder.addCase(createProduct.pending, (state, action) => {
             state.loading = true
             state.error = ''
         })

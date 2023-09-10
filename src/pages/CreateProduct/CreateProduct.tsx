@@ -5,18 +5,19 @@ import {
 } from 'formik';
 import {Product, ProductSchema} from "../../models/product";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {Col, Container, Form, Row} from "react-bootstrap";
+import {Col, Container, Form, Row, Spinner} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import FormField from "../../components/FormField/FormField";
+import {createProduct} from "../../redux/productsSlice";
 
 interface AddProductModalProps extends Omit<SfModalProps, 'header' | 'handleSave'> {}
 
 function CreateProduct(props: AddProductModalProps) {
     const store = useAppSelector(state=>state.products)
     const data = store.list
-    const handleSave = () => {
-        //todo save newProduct to redux
-    }
+    const products = useAppSelector(state => state.products)
+    const handleSubmit = (product: Product) => dispatch(createProduct(product));
+
     const dispatch = useAppDispatch()
     const productsState = useAppSelector((state) => state.products)
     const initialValues: Product = {
@@ -38,16 +39,9 @@ function CreateProduct(props: AddProductModalProps) {
             <Formik
                 validationSchema={ProductSchema}
                 initialValues={initialValues}
-                onSubmit={(values, actions) => {
-
-                }}
+                onSubmit={handleSubmit}
             >
                 {({
-                      values,
-                      errors,
-                      touched,
-                      handleChange,
-                      handleBlur,
                       handleSubmit,
                       isSubmitting
                   }) => {
@@ -98,14 +92,14 @@ function CreateProduct(props: AddProductModalProps) {
                                   />
                               </Col>
                           </Row>
-                          <Button className="mb-3" variant="primary" type="submit">
+                          <Button disabled={isSubmitting} className="mb-3" variant="primary" type="submit">
                               Submit
                           </Button>
+                          <Row>{isSubmitting ? <Spinner animation="border"/> : null}</Row>
                       </Form>
                     )
                 }}
             </Formik>
-
         </Container>
     );
 }
