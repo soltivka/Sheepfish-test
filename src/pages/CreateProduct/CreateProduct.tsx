@@ -9,12 +9,12 @@ import {
 import {Product, ProductSchema} from "../../models/product";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {fetchData} from "../../redux/productsSlice";
+import {Container} from "react-bootstrap";
 
 interface AddProductModalProps extends Omit<SfModalProps, 'header' | 'handleSave'> {
 }
 
-function AddProductModal(props: AddProductModalProps) {
-    const {show, handleClose} = props
+function CreateProduct(props: AddProductModalProps) {
     const store = useAppSelector(state=>state.products)
     const data = store.list
     const handleSave = () => {
@@ -37,11 +37,7 @@ function AddProductModal(props: AddProductModalProps) {
     }
 
     return (
-        <SfModal show={show}
-                 header={'Adding new product'}
-                 handleClose={handleClose}
-                 handleSave={handleSave}
-        >
+        <Container>
 
             <Formik
                 validationSchema={ProductSchema}
@@ -86,8 +82,8 @@ function AddProductModal(props: AddProductModalProps) {
                 )}
             </Formik>
 
-        </SfModal>
+        </Container>
     );
 }
 
-export default AddProductModal;
+export default CreateProduct;
