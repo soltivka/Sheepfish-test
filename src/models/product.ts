@@ -1,4 +1,4 @@
-import {array, date, InferType, number, object, string} from "yup";
+import {array, bool, date, InferType, number, object, string} from "yup";
 
 export const ProductSchema = object({
     "id": number().required().min(0).integer(),
@@ -12,6 +12,7 @@ export const ProductSchema = object({
     "category": string(),
     "thumbnail": string().url(),
     "images": array().of(string().url()),
+    'isDeleted': bool()
 });
 
 

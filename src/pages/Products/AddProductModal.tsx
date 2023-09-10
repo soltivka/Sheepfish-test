@@ -8,7 +8,7 @@ import {
 } from 'formik';
 import {Product, ProductSchema} from "../../models/product";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {fetchProductsAll} from "../../redux/productsSlice";
+import {fetchData} from "../../redux/productsSlice";
 
 interface AddProductModalProps extends Omit<SfModalProps, 'header' | 'handleSave'> {
 }
@@ -16,6 +16,7 @@ interface AddProductModalProps extends Omit<SfModalProps, 'header' | 'handleSave
 function AddProductModal(props: AddProductModalProps) {
     const {show, handleClose} = props
     const store = useAppSelector(state=>state.products)
+    const data = store.list
     const handleSave = () => {
         //todo save newProduct to redux
     }
@@ -80,9 +81,6 @@ function AddProductModal(props: AddProductModalProps) {
                         {errors.stock && touched.stock && errors.stock}
 
                         <button type={'submit'} onClick={()=>{
-                            dispatch(fetchProductsAll(0))
-                            console.log(productsState)
-                            console.log(store)
                         }}>ok</button>
                     </Form>
                 )}

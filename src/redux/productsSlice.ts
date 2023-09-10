@@ -1,40 +1,37 @@
 import {createAsyncThunk, createEntityAdapter, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import axios from "axios";
 import {Product} from "../models/product";
 import {RootState} from "./store";
+import {request} from "../api/request";
 
 
 const productAdapter = createEntityAdapter<Product>({
-    // Assume IDs are stored in a field other than `book.id`
     selectId: (product) => product.id,
-    // Keep the "all IDs" array sorted based on book titles
     sortComparer: (a, b) => a.id - b.id,
 })
 
 // { ids: [], entities: {} }
 const productSelectors = productAdapter.getSelectors<RootState>(
-    (state) => state.products
+    (state) => state.products.list
 )
 
 
-export const fetchProductsAll = createAsyncThunk(
+export const fetchData = createAsyncThunk(
     'products/fetch',
-    async (arg: number, thunkAPI) => {
-        const response = await axios.get('https://dummyjson.com/products/search?q=phone')
-        console.log(response.data.products)
-        return response.data.products
-    }
+    request
 )
 
 export const productsSlice = createSlice({
     name: 'products',
-    initialState: productAdapter.getInitialState(),
+    initialState: {
+        list: productAdapter.getInitialState(),
+        loading: false,
+        total: 0,
+        error: '',
+        showError: false,
+    },
     reducers: {
-        productAdded: productAdapter.addOne,
+
         productLoading(state, action) {
-            // if (state.loading === 'idle') {
-            //     state.loading = 'pending'
-            // }
         },
         productReceived(state, action) {
             // if (state.loading === 'pending') {
@@ -46,15 +43,26 @@ export const productsSlice = createSlice({
     },
     extraReducers: (builder) => {
         // Add reducers for additional action types here, and handle loading state as needed
-        builder.addCase(fetchProductsAll.fulfilled, (state, action) => {
-           productAdapter.addMany(state, action.payload)
+        builder.addCase(fetchData.fulfilled, (state, action) => {
+            state.loading = false
+            state.error=''
+            productAdapter.addMany(state.list, action.payload.products)
+        })
+
+        builder.addCase(fetchData.pending, (state, action) => {
+            state.loading = true
+            state.error=''
+        })
+
+        builder.addCase(fetchData.rejected, (state, action) => {
+            state.loading = false;
+            //todo showError
         })
     },
 })
 
 
-
-export const {productAdded, productLoading, productReceived} = productsSlice.actions
+export const {productLoading, productReceived} = productsSlice.actions
 
 export default productsSlice.reducer
 

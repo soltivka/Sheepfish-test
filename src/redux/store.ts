@@ -6,7 +6,6 @@ const store =  configureStore({
         products: productsReducer,
     },
 })
-console.log(store.getState().products)
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>

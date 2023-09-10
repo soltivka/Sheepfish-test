@@ -4,7 +4,7 @@ import TableRows from "./SfTableRows";
 import React from "react";
 
 
-export type ColumnDefinitionType<T, K extends keyof T> = {
+export type ColumnDefinitionType<T, K extends keyof T | string> = {
     key: K;
     header: string;
     onClick?:(e:React.SyntheticEvent)=>void
