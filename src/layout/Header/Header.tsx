@@ -1,43 +1,45 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
-import styles from "./Header.module.css";
+import {Container} from "react-bootstrap";
+import Routing from "../../routing";
+
+const routes = [
+  {
+    text: 'Products',
+    route: Routing.Products
+  },
+  {
+    text: 'Create',
+    route: Routing.CreateProduct
+  }
+]
 
 const Header: React.FC = () => {
   const location = useLocation();
 
-  return (
-    <Navbar bg="light" className={styles.navbar} expand="lg">
-      <>
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className={styles.nav}>
-            <Nav.Link
-              as={Link}
-              to="/"
-              active={location.pathname === "/"}
-              className={styles.navLink}
-            >
-              Home
-            </Nav.Link>
-
-            <Nav.Link
-              as={Link}
-              to="/products"
-              active={location.pathname === "/products"}
-              className={styles.navLink}
-            >
-              Products
-            </Nav.Link>
+  return <>
+    <Navbar expand="lg" className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand href={Routing.Products}>SheepFish test app</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav"/>
+        <Navbar.Collapse>
+          <Nav className="me-auto">
+            {routes.map(item => (
+              <Nav.Link
+                as={Link}
+                to={item.route}
+                active={location.pathname === item.route}
+              >
+                {item.text}
+              </Nav.Link>
+            ))}
           </Nav>
         </Navbar.Collapse>
-      </>
-
-      <Navbar.Brand as={Link} to="/" className={styles.navbarBrand}>
-        SheepFish test app
-      </Navbar.Brand>
+      </Container>
     </Navbar>
-  );
+  </>
 };
 
 export default Header;
