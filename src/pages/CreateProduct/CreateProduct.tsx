@@ -45,7 +45,6 @@ function CreateProduct(props: AddProductModalProps) {
                       handleSubmit,
                       isSubmitting
                   }) => {
-                    debugger;
                     return (
                       <Form noValidate onSubmit={handleSubmit}>
                           <Row className="mb-3">
