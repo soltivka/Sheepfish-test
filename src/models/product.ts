@@ -8,10 +8,10 @@ export const ProductSchema = object({
     "discountPercentage": number(),
     "rating": number().min(0).max(5),
     "stock": number().required().positive(),
-    "brand": string().min(3),
+    "brand": string().min(3).required(),
     "category": string(),
     "thumbnail": string().url(),
-    "images": array().of(string().url()),
+    "images": array().of(string().url().defined()).defined(),
     'isDeleted': bool()
 });
 

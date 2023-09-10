@@ -1,7 +1,6 @@
 import Table from 'react-bootstrap/Table';
-import TableHeader from "./SfTableHeader";
 import TableRows from "./SfTableRows";
-import React from "react";
+import React, {ReactElement} from "react";
 
 
 export type ColumnDefinitionType<T, K extends keyof T | string> = {
@@ -9,26 +8,23 @@ export type ColumnDefinitionType<T, K extends keyof T | string> = {
     header: string;
     onClick?: (e: React.SyntheticEvent) => void
     width?: number;
+    content?: ReactElement
 }
 
 type SfTableProps<T, K extends keyof T> = {
     data: Array<T>;
     columns: Array<ColumnDefinitionType<T, K>>;
-    rows?: number;
-    maxPage?: number;
-    onPageChanged?: (page: number) => void
 }
 
 const SfTable = <T, K extends keyof T>({
                                            data,
                                            columns,
-                                       }: SfTableProps<T, K>): JSX.Element => {
+                                       }: SfTableProps<T, K>): ReactElement => {
 
 
     return (
         <>
             <Table striped bordered hover variant="dark">
-                <TableHeader columns={columns}/>
                 <TableRows
                     data={data}
                     columns={columns}

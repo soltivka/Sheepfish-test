@@ -13,7 +13,7 @@ const TableRows = <T, K extends keyof T>({data, columns}: TableRowsProps<T, K>):
                 {columns.map((column, index2) => {
                         return (
                             <td key={`cell-${index2}`}>
-                                {row[column.key] as ReactNode}
+                                {column.content ? column.content : row[column.key] as ReactNode}
                             </td>
                         );
                     }
