@@ -1,5 +1,5 @@
 enum Routing {
-  Products = '/',
+  Products = '/products',
   CreateProduct = '/new'
 }
 
