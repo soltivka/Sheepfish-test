@@ -36,15 +36,18 @@ const SfTable = <T, K extends keyof T>({
     }, [page])
 
     return (
-        <Table striped bordered hover variant="dark">
-            <TableHeader columns={columns}/>
-            <TableRows
-                data={dataToView}
-                columns={columns}
-            />
+        <>
+            <Table striped bordered hover variant="dark">
+                <TableHeader columns={columns}/>
+                <TableRows
+                    data={dataToView}
+                    columns={columns}
+                />
+
+            </Table>
             {rows ? <SfPagination page={page} setPage={setPage}
                                   maxPage={maxPage || Math.round(data.length / rows)}></SfPagination> : null}
-        </Table>
+        </>
     );
 };
 

@@ -18,7 +18,7 @@ function SfPagination(props: SfPaginationProps) {
             <Pagination.Item disabled={page + 1 >= maxPage}
                              onClick={() => setPage(page + 1)}>{(page + 1) + 1}</Pagination.Item>
             <Pagination.Next disabled={page + 1 >= maxPage} onClick={() => setPage(page + 1)}/>
-            <Pagination.Last disabled={page >= maxPage} onClick={() => setPage(maxPage)}/>
+            <Pagination.Last disabled={page >= maxPage} onClick={() => setPage(maxPage-1)}/>
         </Pagination>
     );
 }

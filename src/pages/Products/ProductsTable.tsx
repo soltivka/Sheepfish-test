@@ -15,15 +15,14 @@ const ProductsTable = () => {
     const products = useAppSelector(state => state.products)
     const navigate = useNavigate()
     const search = useLocation().search;
-    const currentPage = Number(new URLSearchParams(search).get("id")) || 0;
+    const currentPage = Number(new URLSearchParams(search).get("page")) || 0;
     const sort = function (property: string) {
         // const sortedData = _.sortBy(data, [property, 'id'])
         //  setData(sortedData)
     }
-    //get first page
     useEffect(() => {
         dispatch(fetchData({
-            url: `/products?limit=${rows}&skip=${rows * currentPage}`,
+            url: `/products?limit=${currentPage*rows}&skip=${data.length}`,
             method: 'get',
         }))
     }, [currentPage])
