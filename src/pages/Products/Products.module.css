@@ -26,14 +26,18 @@
     overflow-y: auto;
     overflow-x: hidden;
     max-height: 80vh;
+    background-color:#2c3034;
+    border-radius:0.375rem;
 }
 
 .scrollContainer::-webkit-scrollbar {
     width: 12px;
+    border-radius:var(--bs-border-radius)
 }
 
 .scrollContainer::-webkit-scrollbar-track {
     background: #3F4547FF;
+    border-radius:var(--bs-border-radius)
 }
 
 .scrollContainer::-webkit-scrollbar-thumb {
