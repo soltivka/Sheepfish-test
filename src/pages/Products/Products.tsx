@@ -3,13 +3,14 @@ import _ from "lodash";
 import {Product} from "../../models/product";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {deleteProduct, fetchData, productSelectors, searchData, setSortSettings} from "../../redux/productsSlice";
-import {Carousel, Container, Form, InputGroup, Spinner} from "react-bootstrap";
+import {Carousel, Container, Form, InputGroup, Row, Spinner} from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
 import s from './Products.module.css';
 import Button from "react-bootstrap/Button";
 import {Trash} from "react-bootstrap-icons";
 import SfModal from "../../components/SfModal/SfModal";
+import cn from "classnames";
 
 export type ColumnDefinitionType<T, K extends keyof T | string> = {
     key: K;
@@ -126,15 +127,16 @@ const Products = () => {
 
     return (
         <>
-            <Container >
-                <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1">Search</InputGroup.Text>
-                    <Form.Control onChange={(e) => {
-                        onSearchInput(e.target.value)
-                    }}/>
-                </InputGroup>
-                <Container className={s.scrollContainer}>
-                    <Table striped bordered hover variant="dark" >
+            <Container>
+                    <InputGroup className="mb-3">
+                        <InputGroup.Text id="basic-addon1">Search</InputGroup.Text>
+                        <Form.Control onChange={(e) => {
+                            onSearchInput(e.target.value)
+                        }}/>
+                    </InputGroup>
+
+                <div className={cn(s.tableContainer, 'mb-3')}>
+                    <Table striped bordered hover>
                         <thead>
                         <tr>{columns.map((el, i, arr) => {
                             return (
@@ -154,8 +156,8 @@ const Products = () => {
                         {data.map((row, index) => {
                             return (
                                 <tr key={`row-${row.id}`}
-                                style={{cursor:row.images.length>0?'pointer':'auto'}}
-                                onClick={() => setShowCarousel(row.images)}
+                                    style={{cursor: row.images.length > 0 ? 'pointer' : 'auto'}}
+                                    onClick={() => setShowCarousel(row.images)}
                                 >
                                     {columns.map((column, index2) => {
                                             if (column.type === 'text') {
@@ -185,7 +187,7 @@ const Products = () => {
                         })}
                         </tbody>
                     </Table>
-                </Container>
+                </div>
 
                 {products.loading ? <Spinner animation="border"/> : null}
                 <Modal show={showCarousel.length > 0}

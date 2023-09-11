@@ -20,7 +20,7 @@ const Header: React.FC = () => {
   const location = useLocation();
 
   return <>
-    <Navbar sticky="top" expand="lg" className="bg-body-tertiary">
+    <Navbar sticky="top" expand="lg" className="bg-body-tertiary mb-3">
       <Container>
         <Navbar.Brand href={Routing.Products}>SheepFish test app</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav"/>

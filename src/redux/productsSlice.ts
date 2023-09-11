@@ -1,7 +1,7 @@
 import {createAsyncThunk, createEntityAdapter, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {Product} from "../models/product";
 import {RootState} from "./store";
-import {postProduct, request} from "../api/request";
+import {postProduct, getProducts} from "../api/getProducts";
 
 
 const productAdapter = createEntityAdapter<Product>({
@@ -17,7 +17,7 @@ export const productSelectors = productAdapter.getSelectors<RootState>(
 
 export const fetchData = createAsyncThunk(
     'products/fetch',
-    request
+    getProducts
 )
 
 export const createProduct = createAsyncThunk(
@@ -30,7 +30,7 @@ export const createProduct = createAsyncThunk(
 
 export const searchData = createAsyncThunk(
     'products/search',
-    request
+    getProducts
 )
 
 export const productsSlice = createSlice({

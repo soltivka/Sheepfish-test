@@ -7,9 +7,9 @@ export type RequestDataType = {
     method: 'get' | 'post' | 'put' | 'delete'
 }
 
-const HOST = 'https://dummyjson.com';
+const HOST = process.env.REACT_APP_HOST;
 
-export const request = async (requestData: RequestDataType) => {
+export const getProducts = async (requestData: RequestDataType) => {
     const response = await axios[requestData.method](HOST + requestData.url)
     return response.data
 }
