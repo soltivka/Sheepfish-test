@@ -22,10 +22,10 @@ export const fetchData = createAsyncThunk(
 
 export const createProduct = createAsyncThunk(
     'products/createProduct',
-  async (productData: Product) => {
-      const product = await postProduct(productData)
-      return product;
-  }
+    async (productData: Product) => {
+        const product = await postProduct(productData)
+        return product;
+    }
 )
 
 export const searchData = createAsyncThunk(
@@ -38,26 +38,27 @@ export const productsSlice = createSlice({
     initialState: {
         list: productAdapter.getInitialState(),
         loading: false,
-        deletedList:[0],
+        deletedList: [0],
         total: 0,
         error: '',
         sortBy: 'id',
-        sortAsc:true,
+        sortAsc: true,
         showError: false,
     },
     reducers: {
         setSortSettings(state, action) {
-            if(action.payload === state.sortBy){
+            if (action.payload === state.sortBy) {
                 state.sortAsc = !state.sortAsc
-            }else{
-                state.sortBy=action.payload
+            } else {
+                state.sortBy = action.payload
                 state.sortAsc = true
             }
         },
 
-        deleteProduct(state,action:{type:string, payload:number}){
+        deleteProduct(state, action: { type: string, payload: number }) {
             state.deletedList = [...state.deletedList, action.payload]
         },
+
     },
     extraReducers: (builder) => {
         // Add reducers for additional action types here, and handle loading state as needed
@@ -105,7 +106,7 @@ export const productsSlice = createSlice({
 })
 
 
-export const { setSortSettings,  deleteProduct } = productsSlice.actions
+export const {setSortSettings, deleteProduct} = productsSlice.actions
 
 export default productsSlice.reducer
 

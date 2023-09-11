@@ -8,7 +8,8 @@ import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
 import s from './Products.module.css';
 import Button from "react-bootstrap/Button";
-import {ArrowRight, Trash} from "react-bootstrap-icons";
+import {Trash} from "react-bootstrap-icons";
+import SfModal from "../../components/SfModal/SfModal";
 
 export type ColumnDefinitionType<T, K extends keyof T | string> = {
     key: K;
@@ -23,8 +24,8 @@ const Products = () => {
     const dispatch = useAppDispatch()
     const products = useAppSelector(state => state.products)
     const [showCarousel, setShowCarousel] = useState<string[]>([])
+    const [showDeleteModal, setShowDeleteModal] = useState<number>(0)
     const deletedList = useAppSelector((state) => state.products.deletedList)
-    console.log(deletedList)
     const data = useAppSelector(rootState => {
         const state = rootState.products
         const entities = productSelectors.selectAll(rootState).filter(product => !deletedList.includes(product.id))
@@ -49,12 +50,6 @@ const Products = () => {
             header: 'id',
             width: 10,
             onClick: () => dispatch(setSortSettings('id')),
-        },
-        {
-            key: 'images',
-            type: 'image',
-            header: '',
-            width: 100,
         },
         {
             key: 'category',
@@ -95,7 +90,7 @@ const Products = () => {
             header: 'discount, %',
             type: 'text',
             width: 5,
-                onClick: () => dispatch(setSortSettings('discountPercentage')),
+            onClick: () => dispatch(setSortSettings('discountPercentage')),
         },
         {
             key: 'rating',
@@ -131,70 +126,67 @@ const Products = () => {
 
     return (
         <>
-            <Container>
+            <Container >
                 <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1">Search</InputGroup.Text>
                     <Form.Control onChange={(e) => {
                         onSearchInput(e.target.value)
                     }}/>
                 </InputGroup>
+                <Container className={s.scrollContainer}>
+                    <Table striped bordered hover variant="dark" >
+                        <thead>
+                        <tr>{columns.map((el, i, arr) => {
+                            return (
+                                <th key={el.key}
+                                    onClick={el.onClick}
+                                    style={{
+                                        width: (el.width ?? 100) + 'px',
+                                        cursor: el.onClick ? 'pointer' : 'auto',
+                                        position: 'sticky',
+                                        top: 0,
+                                    }}>
+                                    {el.header}
+                                </th>)
+                        })}</tr>
+                        </thead>
+                        <tbody>
+                        {data.map((row, index) => {
+                            return (
+                                <tr key={`row-${row.id}`}
+                                style={{cursor:row.images.length>0?'pointer':'auto'}}
+                                onClick={() => setShowCarousel(row.images)}
+                                >
+                                    {columns.map((column, index2) => {
+                                            if (column.type === 'text') {
+                                                return (
+                                                    <td key={`${column.key}-${row.id}`}>
+                                                        {row[column.key as keyof Product] as ReactNode}
+                                                    </td>
+                                                );
+                                            }
 
-                <Table striped bordered hover variant="dark">
-                    <thead>
-                    <tr>{columns.map((el, i, arr) => {
-                        return (
-                            <th key={el.key}
-                                onClick={el.onClick}
-                                style={{
-                                    width: (el.width ?? 100) + 'px',
-                                    cursor: el.onClick ? 'pointer' : ''
-                                }}>
-                                {el.header}
-                            </th>)
-                    })}</tr>
-                    </thead>
-                    <tbody>
-                    {data.map((row, index) => {
-                        return (
-                            <tr key={`row-${row.id}`}>
-                                {columns.map((column, index2) => {
-                                        if (column.type === 'text') {
-                                            return (
-                                                <td key={`${column.key}-${row.id}`}>
-                                                    {row[column.key as keyof Product] as ReactNode}
-                                                </td>
-                                            );
-                                        }
-                                        if (column.type === 'image') {
-                                            return (
-                                                <td key={`${column.key}-${row.id}`}
-                                                    onClick={() => setShowCarousel(row.images)}>
-                                                    <img src={`${row.images[0]}`} alt="product image"
-                                                         style={{
-                                                             width: '100%',
-                                                             cursor: 'pointer',
-                                                         }}
-                                                    />
-                                                </td>
-                                            );
-                                        }
+                                            if (column.type === 'delete') {
+                                                return (
+                                                    <td key={`${column.key}-${row.id}`}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            setShowDeleteModal(row.id)
+                                                        }}>
+                                                        <Button variant="outline-secondary"> <Trash/> </Button>
+                                                    </td>
+                                                );
+                                            }
 
-                                        if (column.type === 'delete') {
-                                            return (
-                                                <td key={`${column.key}-${row.id}`}
-                                                    onClick={() => dispatch(deleteProduct(row.id))}>
-                                                    <Button variant="outline-secondary"> <Trash/> </Button>
-                                                </td>
-                                            );
                                         }
+                                    )}
+                                </tr>
+                            )
+                        })}
+                        </tbody>
+                    </Table>
+                </Container>
 
-                                    }
-                                )}
-                            </tr>
-                        )
-                    })}
-                    </tbody>
-                </Table>
                 {products.loading ? <Spinner animation="border"/> : null}
                 <Modal show={showCarousel.length > 0}
                        onHide={() => setShowCarousel([])}>
@@ -210,8 +202,19 @@ const Products = () => {
                             })
                         }
                     </Carousel>
-
                 </Modal>
+                <SfModal show={Boolean(showDeleteModal)}
+                         header={'Deleting product'}
+                         saveButtonText={'Delete'}
+                         handleSave={() => {
+                             dispatch(deleteProduct(showDeleteModal))
+                             setShowDeleteModal(0)
+                         }}
+                         handleClose={() => {
+                             setShowDeleteModal(0)
+                         }}>
+                    <p>Are you sure you want to delete this product?</p>
+                </SfModal>
             </Container>
         </>
 

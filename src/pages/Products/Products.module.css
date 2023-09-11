@@ -8,13 +8,39 @@
     display: flex !important;
     align-items: center;
     justify-content: center;
-    padding:5px;
+    padding: 5px;
 }
+
 .carousel {
     height: 70vh;
     background-color: #212529;
 }
-.image{
+
+.image {
     object-fit: contain;
-    width: 80%;    height: 60vh;
+    width: 80%;
+    height: 60vh;
+}
+
+.scrollContainer {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 80vh;
+}
+
+.scrollContainer::-webkit-scrollbar {
+    width: 12px;
+}
+
+.scrollContainer::-webkit-scrollbar-track {
+    background: #3F4547FF;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+    background: #fff;
+    border-radius: 6px;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }
