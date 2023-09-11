@@ -7,11 +7,10 @@ import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {Col, Container, Form, ModalProps, Row, Spinner} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import FormField from "../../components/FormField/FormField";
-import {createProduct} from "../../redux/productsSlice";
+import {createProduct, productsSelector} from "../../redux/productsSlice";
 import {useNavigate} from "react-router";
 
 function CreateProduct() {
-    const store = useAppSelector(state=>state.products)
     const navigate = useNavigate()
     const handleSubmit = (product: Product) => {
         dispatch(createProduct(product))

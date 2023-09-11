@@ -1,7 +1,9 @@
-import {createAsyncThunk, createEntityAdapter, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createAsyncThunk, createEntityAdapter, createSlice, EntityAdapter} from '@reduxjs/toolkit'
 import {Product} from "../models/product";
 import {RootState} from "./store";
-import {postProduct, getProducts} from "../api/getProducts";
+import {postProduct, fetchProducts, searchProducts} from "../api/fetchProducts";
+import {EntityState} from "@reduxjs/toolkit/src/entities/models";
+import _ from "lodash";
 
 
 const productAdapter = createEntityAdapter<Product>({
@@ -9,15 +11,14 @@ const productAdapter = createEntityAdapter<Product>({
     sortComparer: (a, b) => a.id - b.id,
 })
 
-// { ids: [], entities: {} }
 export const productSelectors = productAdapter.getSelectors<RootState>(
     (state) => state.products.list
 )
 
 
-export const fetchData = createAsyncThunk(
+export const getProducts = createAsyncThunk(
     'products/fetch',
-    getProducts
+    fetchProducts
 )
 
 export const createProduct = createAsyncThunk(
@@ -28,23 +29,36 @@ export const createProduct = createAsyncThunk(
     }
 )
 
-export const searchData = createAsyncThunk(
+export const searchProductsByQuery = createAsyncThunk(
     'products/search',
-    getProducts
+  (query: string) => searchProducts(query)
 )
+
+interface ProductsSliceState {
+    list: EntityState<Product>,
+    loading: boolean;
+    deletedList: number[];
+    total: number;
+    error: string;
+    sortBy: string;
+    sortAsc: boolean;
+    showError: boolean;
+}
+
+const initialState: ProductsSliceState = {
+  list: productAdapter.getInitialState(),
+  loading: false,
+  deletedList: [0],
+  total: 0,
+  error: '',
+  sortBy: 'id',
+  sortAsc: true,
+  showError: false,
+};
 
 export const productsSlice = createSlice({
     name: 'products',
-    initialState: {
-        list: productAdapter.getInitialState(),
-        loading: false,
-        deletedList: [0],
-        total: 0,
-        error: '',
-        sortBy: 'id',
-        sortAsc: true,
-        showError: false,
-    },
+    initialState,
     reducers: {
         setSortSettings(state, action) {
             if (action.payload === state.sortBy) {
@@ -61,30 +75,28 @@ export const productsSlice = createSlice({
 
     },
     extraReducers: (builder) => {
-        // Add reducers for additional action types here, and handle loading state as needed
-        builder.addCase(fetchData.fulfilled, (state, action) => {
+        builder.addCase(getProducts.fulfilled, (state, action) => {
             state.loading = false
             state.error = ''
             productAdapter.addMany(state.list, action.payload.products)
             state.total = action.payload.total
         })
 
-        builder.addCase(fetchData.pending, (state, action) => {
+        builder.addCase(getProducts.pending, (state, action) => {
             state.loading = true
             state.error = ''
         })
 
-        builder.addCase(fetchData.rejected, (state, action) => {
+        builder.addCase(getProducts.rejected, (state, action) => {
             state.loading = false;
-            //todo showError
         })
 
-        builder.addCase(searchData.fulfilled, (state, action) => {
+        builder.addCase(searchProductsByQuery.fulfilled, (state, action) => {
             state.loading = false;
             productAdapter.setAll(state.list, action.payload.products)
         })
 
-        builder.addCase(searchData.pending, (state, action) => {
+        builder.addCase(searchProductsByQuery.pending, (state, action) => {
             state.loading = true
             state.error = ''
         })
@@ -105,6 +117,24 @@ export const productsSlice = createSlice({
     },
 })
 
+export const productsSelector = (rootState: RootState) => rootState.products;
+
+export const deletedProductsSelector = (rootState: RootState) => {
+    const products = productsSelector(rootState);
+    return products.deletedList;
+}
+
+export const productItemsSelector = (rootState: RootState) => {
+    const state = rootState.products
+    const deletedList = deletedProductsSelector(rootState);
+    const entities = productSelectors.selectAll(rootState).filter(product => !deletedList.includes(product.id))
+    const sorted = _.sortBy(entities, [state.sortBy, 'id'])
+
+    if (!state.sortAsc) {
+        return sorted.reverse()
+    }
+    return sorted
+}
 
 export const {setSortSettings, deleteProduct} = productsSlice.actions
 

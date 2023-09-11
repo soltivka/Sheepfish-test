@@ -1,9 +1,14 @@
 import React, {ReactElement, ReactNode, useEffect, useState} from "react";
-import _ from "lodash";
 import {Product} from "../../models/product";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {deleteProduct, fetchData, productSelectors, searchData, setSortSettings} from "../../redux/productsSlice";
-import {Carousel, Container, Form, InputGroup, Row, Spinner} from "react-bootstrap";
+import {
+    deleteProduct,
+    getProducts, productItemsSelector,
+    productsSelector,
+    searchProductsByQuery,
+    setSortSettings
+} from "../../redux/productsSlice";
+import {Carousel, Container, Form, InputGroup, Spinner} from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
 import s from './Products.module.css';
@@ -11,6 +16,7 @@ import Button from "react-bootstrap/Button";
 import {Trash} from "react-bootstrap-icons";
 import SfModal from "../../components/SfModal/SfModal";
 import cn from "classnames";
+import {debounce} from "lodash";
 
 export type ColumnDefinitionType<T, K extends keyof T | string> = {
     key: K;
@@ -23,26 +29,18 @@ export type ColumnDefinitionType<T, K extends keyof T | string> = {
 
 const Products = () => {
     const dispatch = useAppDispatch()
-    const products = useAppSelector(state => state.products)
+    const products = useAppSelector(productsSelector)
     const [showCarousel, setShowCarousel] = useState<string[]>([])
     const [showDeleteModal, setShowDeleteModal] = useState<number>(0)
-    const deletedList = useAppSelector((state) => state.products.deletedList)
-    const data = useAppSelector(rootState => {
-        const state = rootState.products
-        const entities = productSelectors.selectAll(rootState).filter(product => !deletedList.includes(product.id))
-        const sorted = _.sortBy(entities, [state.sortBy, 'id'])
-        if (!products.sortAsc) {
-            return sorted.reverse()
-        }
-        return sorted
-    })
-    useEffect(() => {
-        dispatch(fetchData({
-            url: `/products?limit=0`,
-            method: 'get',
-        }))
+    const data = useAppSelector(productItemsSelector);
 
+    useEffect(() => {
+        dispatch(getProducts())
     }, [])
+
+    const onSearchInput = debounce((value: string) => {
+        dispatch(searchProductsByQuery(value));
+    }, 500);
 
     const columns: ColumnDefinitionType<Product, keyof Product | string>[] = [
         {
@@ -114,16 +112,6 @@ const Products = () => {
             width: 5,
         },
     ]
-
-
-    const onSearchInput = (value: string) => {
-        const url = 'search?q=' + value
-        dispatch(searchData({
-            url: `/products/${url}`,
-            method: 'get',
-        }))
-
-    }
 
     return (
         <>
