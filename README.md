@@ -2,6 +2,28 @@
 
 [See Demo Application on vercel](https://sheepfish-test.vercel.app/products)
 
+This is a simple web application that allows users to **browse** and **filter** lists of products from a database. It is built using **React** and **Redux** for creating the interface and managing the application's state.
+
+## Features
+
+- **Multiple pages**: The app consists of several components, including a header, a search bar, a product list, and a form for adding new products.
+- **Routing**: [React Router](https://reactrouter.com/en/main) is used to create routes within the app, allowing users to navigate between pages.
+- **State management**: [Redux](https://redux.js.org/) is used to manage the state of the application. Reducers and actions are implemented to add, delete, and update products.
+- **Product List component**: Displays data from the Redux store as a table with columns for ID, name, description, price, photo, rating, stock, and category. Users can click on a product row to view the product image.
+- **Search functionality**: Users can search for products by name or category. The product list component automatically updates when users enter a query in the search bar.
+- **Form for adding new products**: A form is provided for adding new products. [Formik](https://formik.org/) and [Yup](https://github.com/jquense/yup) are used for data validation. The form includes fields for title, brand, description, stock, and price.
+- **Deletion of products**: Users can delete products from the list and from the Redux store.
+
+## Technologies and Useful Links
+
+- [Dummy JSON](https://dummyjson.com/): Used for generating mock data.
+- [Formik](https://formik.org/): Used for handling form input and validation.
+- [Yup](https://github.com/jquense/yup): Used for defining validation schemas.
+- [React Router](https://reactrouter.com/en/main): Used for creating navigation routes.
+- [Redux](https://redux.js.org/): Used for state management.
+- [Redux Toolkit](https://redux-toolkit.js.org/): Enhances Redux development by providing simplified tools and abstractions.
+
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -31,23 +53,3 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 
 
-This is a simple web application that allows users to **browse** and **filter** lists of products from a database. It is built using **React** and **Redux** for creating the interface and managing the application's state. The app interacts with an API to fetch and save data from the database.
-
-## Features
-
-- **Multiple pages**: The app consists of several components, including a header, a search bar, a product list, and a form for adding new products.
-- **Routing**: [React Router](https://reactrouter.com/en/main) is used to create routes within the app, allowing users to navigate between pages.
-- **State management**: [Redux](https://redux.js.org/) is used to manage the state of the application. Reducers and actions are implemented to add, delete, and update products.
-- **Product List component**: Displays data from the Redux store as a table with columns for ID, name, description, price, photo, rating, stock, and category. Users can click on a product row to view the product image.
-- **Search functionality**: Users can search for products by name or category. The product list component automatically updates when users enter a query in the search bar.
-- **Form for adding new products**: A form is provided for adding new products. [Formik](https://formik.org/) and [Yup](https://github.com/jquense/yup) are used for data validation. The form includes fields for title, brand, description, stock, and price.
-- **Deletion of products**: Users can delete products from the list and from the Redux store.
-
-## Technologies and Useful Links
-
-- [Dummy JSON](https://dummyjson.com/): Used for generating mock data.
-- [Formik](https://formik.org/): Used for handling form input and validation.
-- [Yup](https://github.com/jquense/yup): Used for defining validation schemas.
-- [React Router](https://reactrouter.com/en/main): Used for creating navigation routes.
-- [Redux](https://redux.js.org/): Used for state management.
-- [Redux Toolkit](https://redux-toolkit.js.org/): Enhances Redux development by providing simplified tools and abstractions.
