@@ -5,8 +5,8 @@
 This is a simple web application that allows users to **browse** and **filter** lists of products from a database. It is built using **React** and **Redux** for creating the interface and managing the application's state.
 
 ## Features
-
-- **Multiple pages**: The app consists of several components, including a header, a search bar, a product list, and a form for adding new products.
+--**Basic layout**: In the application, a basic web layout is implemented, including header, a search bar, and the body of the pages
+- **Multiple pages**: The app consists 2 pages to interact : products page and add new product page
 - **Routing**: [React Router](https://reactrouter.com/en/main) is used to create routes within the app, allowing users to navigate between pages.
 - **State management**: [Redux](https://redux.js.org/) is used to manage the state of the application. Reducers and actions are implemented to add, delete, and update products.
 - **Product List component**: Displays data from the Redux store as a table with columns for ID, name, description, price, photo, rating, stock, and category. Users can click on a product row to view the product image.
