@@ -1,0 +1,21 @@
+.carouselItem:global(.active) {
+    opacity: 1;
+    transition-duration: 100ms;
+}
+
+.carouselItem {
+    opacity: 0;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding:5px;
+}
+.carousel {
+    height: 70vh;
+    background-color: #212529;
+}
+.image{
+    object-fit: contain;
+    width: 80%;
+    height: 60vh;
+}

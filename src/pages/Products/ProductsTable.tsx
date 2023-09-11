@@ -1,14 +1,12 @@
-import SfTable from "../../components/SfTable/SfTable";
 import React, {ReactElement, ReactNode, useEffect, useState} from "react";
 import _ from "lodash";
 import {Product} from "../../models/product";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
 import {fetchData, productSelectors, searchData, setSortSettings} from "../../redux/productsSlice";
 import {Carousel, Container, Form, InputGroup, Spinner} from "react-bootstrap";
-import TableRows from "../../components/SfTable/SfTableRows";
 import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
+import s from './Products.module.css';
 
 export type ColumnDefinitionType<T, K extends keyof T | string> = {
     key: K;
@@ -178,17 +176,15 @@ const ProductsTable = () => {
                     </tbody>
                 </Table>
                 {products.loading ? <Spinner animation="border"/> : null}
-                <Modal style={{
-                    display:'flex',
-                    justifyContent:"center",
-                }}
-                       show={showCarousel.length > 0} onHide={() => setShowCarousel([])}>
-                    <Carousel>
+                <Modal show={showCarousel.length > 0}
+                       onHide={() => setShowCarousel([])}>
+                    <Carousel className={s.carousel}>
                         {
                             showCarousel.map((el, i) => {
                                 return (
-                                    <Carousel.Item interval={1000}>
-                                        <img src={showCarousel[i]} alt={`product image ${i}`}></img>
+                                    <Carousel.Item interval={30000} className={s.carouselItem}>
+                                        <img className={s.image}
+                                             src={showCarousel[i]} alt={`product image ${i}`}></img>
                                     </Carousel.Item>
                                 )
                             })

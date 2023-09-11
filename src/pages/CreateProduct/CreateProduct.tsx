@@ -14,12 +14,9 @@ interface AddProductModalProps extends Omit<SfModalProps, 'header' | 'handleSave
 
 function CreateProduct(props: AddProductModalProps) {
     const store = useAppSelector(state=>state.products)
-    const data = store.list
-    const products = useAppSelector(state => state.products)
     const handleSubmit = (product: Product) => dispatch(createProduct(product));
 
     const dispatch = useAppDispatch()
-    const productsState = useAppSelector((state) => state.products)
     const initialValues: Product = {
         "id": 0,
         "title": '',
