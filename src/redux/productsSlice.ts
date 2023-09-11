@@ -38,6 +38,7 @@ export const productsSlice = createSlice({
     initialState: {
         list: productAdapter.getInitialState(),
         loading: false,
+        deletedList:[0],
         total: 0,
         error: '',
         sortBy: 'id',
@@ -53,14 +54,9 @@ export const productsSlice = createSlice({
                 state.sortAsc = true
             }
         },
-        productLoading(state, action) {
-        },
-        productReceived(state, action) {
-            // if (state.loading === 'pending') {
-            //     // Or, call them as "mutating" helpers in a case reducer
-            //     productAdapter.setAll(state, action.payload)
-            //     state.loading = 'idle'
-            // }
+
+        deleteProduct(state,action:{type:string, payload:number}){
+            state.deletedList = [...state.deletedList, action.payload]
         },
     },
     extraReducers: (builder) => {
@@ -109,7 +105,7 @@ export const productsSlice = createSlice({
 })
 
 
-export const {productLoading, setSortSettings, productReceived} = productsSlice.actions
+export const { setSortSettings,  deleteProduct } = productsSlice.actions
 
 export default productsSlice.reducer
 

@@ -1,18 +1,15 @@
 import React from "react";
-import {SfModalProps} from "../../components/SfModal/SfModal";
 import {
     Formik,
 } from 'formik';
 import {Product, ProductSchema} from "../../models/product";
 import {useAppDispatch, useAppSelector} from "../../redux/hooks";
-import {Col, Container, Form, Row, Spinner} from "react-bootstrap";
+import {Col, Container, Form, ModalProps, Row, Spinner} from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import FormField from "../../components/FormField/FormField";
 import {createProduct} from "../../redux/productsSlice";
 
-interface AddProductModalProps extends Omit<SfModalProps, 'header' | 'handleSave'> {}
-
-function CreateProduct(props: AddProductModalProps) {
+function CreateProduct() {
     const store = useAppSelector(state=>state.products)
     const handleSubmit = (product: Product) => dispatch(createProduct(product));
 
