@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Sheepfish-test-app web application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[See Demo Application on vercel](https://sheepfish-test.vercel.app/products)
 
 ## Available Scripts
 
@@ -29,18 +29,25 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This is a simple web application that allows users to **browse** and **filter** lists of products from a database. It is built using **React** and **Redux** for creating the interface and managing the application's state. The app interacts with an API to fetch and save data from the database.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Features
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- **Multiple pages**: The app consists of several components, including a header, a search bar, a product list, and a form for adding new products.
+- **Routing**: [React Router](https://reactrouter.com/en/main) is used to create routes within the app, allowing users to navigate between pages.
+- **State management**: [Redux](https://redux.js.org/) is used to manage the state of the application. Reducers and actions are implemented to add, delete, and update products.
+- **Product List component**: Displays data from the Redux store as a table with columns for ID, name, description, price, photo, rating, stock, and category. Users can click on a product row to view the product image.
+- **Search functionality**: Users can search for products by name or category. The product list component automatically updates when users enter a query in the search bar.
+- **Form for adding new products**: A form is provided for adding new products. [Formik](https://formik.org/) and [Yup](https://github.com/jquense/yup) are used for data validation. The form includes fields for title, brand, description, stock, and price.
+- **Deletion of products**: Users can delete products from the list and from the Redux store.
 
-## Learn More
+## Technologies and Useful Links
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [Dummy JSON](https://dummyjson.com/): Used for generating mock data.
+- [Formik](https://formik.org/): Used for handling form input and validation.
+- [Yup](https://github.com/jquense/yup): Used for defining validation schemas.
+- [React Router](https://reactrouter.com/en/main): Used for creating navigation routes.
+- [Redux](https://redux.js.org/): Used for state management.
+- [Redux Toolkit](https://redux-toolkit.js.org/): Enhances Redux development by providing simplified tools and abstractions.
